@@ -1,0 +1,53 @@
+server:
+  port: 9092
+
+eureka:
+  instance:
+    hostname: localhost
+    port: 9091
+  client:
+    registerWithEureka: true
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.instance.port}/eureka/
+  server:
+    wait-time-in-ms-when-sync-empty: 3000
+
+spring:
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        password: postgres
+        url: jdbc:postgresql://localhost:5432/cloud
+        username: postgres
+    jpa:
+      properties:
+            hibernate:
+                   show_sql : true
+                   format_sql: true
+                   jdbc : 
+                      lob:
+                        non_contextual_creation: true
+#Flyway
+endpoints:
+      logview:
+          path: log
+      flyway:
+          web:
+          enabled: true
+flyway:
+    baseline-on-migrate: true
+# Log configuration
+logging:
+    config: file:logback-spring.xml
+#Properties
+auth:
+   token:
+      expiration:
+            time: 864000
+      validity:
+            time: 300
+   client:
+        id: alpha
+        secret: horizon
+        scope: read,write
+        authorized-grant-types: password,refresh_token,client-credentials
